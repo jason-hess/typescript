@@ -11,6 +11,10 @@ class Student {
   }
 }
 
+/**
+ *
+ * @param person The Person
+ */
 function greet(person: Person) {
   return "Hello " + person.firstName + "!";
 }

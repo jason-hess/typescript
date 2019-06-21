@@ -5,6 +5,10 @@ class Student {
         this.fullname = firstName + " " + lastName;
     }
 }
+/**
+ *
+ * @param person The Person
+ */
 function greet(person) {
     return "Hello " + person.firstName + "!";
 }
