@@ -29,3 +29,8 @@ function greet(person: Person) {
   return "Hello " + person.firstName + "!";
 }
 ```
+
+## VS Code
+
+You can enable this by setting "typescript.referencesCodeLens.enabled": true in the User Settings file.
+To get the CodeLens in VSCode for TypeScript.
