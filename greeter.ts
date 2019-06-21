@@ -3,6 +3,14 @@ interface Person {
   lastName: string;
 }
 
+class Student {
+  fullname: string;
+
+  constructor(public firstName: string, public lastName: string) {
+    this.fullname = firstName + " " + lastName;
+  }
+}
+
 function greet(person: Person) {
   return "Hello " + person.firstName + "!";
 }
@@ -10,5 +18,6 @@ function greet(person: Person) {
 greet({ firstName: "Jason", lastName: "Hess" });
 
 let user = { firstName: "Jason", lastName: "Hess" };
+let student = new Student("Jason", "Hess");
 
-document.body.innerHTML = greet(user);
+document.body.innerHTML = greet(student);
