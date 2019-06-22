@@ -1,5 +1,3 @@
-import { Walker } from "./worker";
-
 interface Person {
   firstName: string;
   lastName: string;
@@ -25,6 +23,6 @@ greet({ firstName: "Jason", lastName: "Hess" });
 
 let user = { firstName: "Jason", lastName: "Hess" };
 let student = new Student("Jason", "Hess");
-let worker = new Walker("Jason", "Hess");
+//let worker = new Walker("Jason", "Hess");
 
-document.body.innerHTML = greet(student);
+document.body.innerHTML = greet(student); 
