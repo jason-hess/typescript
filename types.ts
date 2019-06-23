@@ -27,7 +27,7 @@ let theList: number[] = [1, 2, 3]; // or: let anotherList: Array<number> = [1, 2
 theList[3] = 4;
 theList.push(5);
 theList[100] = 101;
-let hole: number = theList[99]; // sets hole to undefined
+let hole: number = theList[99]; // sets `hole` to undefined
 
 // Tuple types allow you to express an array where the type of a fixed number of elements is known,
 // but need not be the same and lets you specify type assertions on the elements.
@@ -35,10 +35,9 @@ let firstTuple: [string, number] = ["key", 1];
 firstTuple[0] = "newKey";
 firstTuple[1] = 13;
 firstTuple = ["anotherKey", 22];
+// firstTuple[2] = undefined; // error TS2493: Tuple type '[string, number]' of length '2' has no element at index '2'.
 // firstTuple = [true, "jason"]; // error TS2322: Type 'string' is not assignable to type 'number'.
-let anArrayOfTypeUnion = [1, "key"];
-// can access an index outside of the legal range
-anArrayOfTypeUnion[3] = "true";
+let anArrayOfTypeUnion = [1, "key"]; // this is not a Tuple, it's an array
 
 // enum
 enum Colour {
@@ -65,7 +64,7 @@ let anotherEnumValue: AnotherEnum = 13;
 // be careful
 let yetAnotherEnumValue: AnotherEnum = 12; // valid but falls out of the valid range.
 
-// untyped lets you opt-in and out-out of type checking as needed
+// the any type lets you opt-in and out-out of type checking as needed
 let z: any = "string";
 z = 10;
 z = true;
@@ -84,8 +83,9 @@ function voidFunction(): void {
 }
 
 // type inference
+// TypeScript will infer types for you
 let isAlsoDone = true;
-isAlsoDone = 100;
+// isAlsoDone = 100; // error TS2322: Type '100' is not assignable to type 'boolean'
 
 // type assertions
 // A type assertion is like a type cast in other languages, but performs no special
@@ -98,13 +98,13 @@ let aLength: number = (<string>aValue).length;
 // when using TypeScript with JSX, only as-style assertions are allowed
 
 // use let instead of var whenever possible to prevent scope issues
-var tz: string = null;
+var tz: string = "value";
 
 // A union type describes a value that can be one of several types
 // If we have a value that has a union type, we can only access members that are common to all types in the union.
 let unionType: boolean | string = "true";
 unionType = true;
-unionType = 10; // error
+// unionType = 10; // error TS2322: Type '10' is not assignable to type 'string | boolean'
 let anotherUnionType: number | string; // parens are optional
 let arrayUnionType: (number | string)[]; // or a required for precedence
 let unionOfNumberOrStringArray: number | string[];
@@ -121,7 +121,7 @@ function unionTypeParameter(
   return "";
 }
 
-// in most cases (assigning default values to variables and paramaters, and setting
+// in most cases (assigning default values to variables and parameters, and setting
 // function return values) type inferenece is straightforward
 let typeInferred = true;
 
@@ -146,7 +146,7 @@ let typeNotInferredArray: AnAnimal[] = [new Bear(), new Cheetah()];
 // For instance, in the following onmousedown is an event of type MouseEvent which means we can infer
 // mouseEvent is of type MouseEvent, which means buton does not exist
 window.onmousedown = mouseEvent => {
-  console.log(mouseEvent.buton); //<- Error
+  // console.log(mouseEvent.buton); // error TS2551: Property 'buton' does not exist on type 'MouseEvent'. Did you mean 'button'?
 };
 // Contextual typing applies in many cases. Common cases include arguments to function calls, right hand
 // sides of assignments, type assertions, members of object and array literals, and return statements.
@@ -165,7 +165,7 @@ function genericFunction<T>(param: T): T {
   // the type T has been captured so we can use it as a return type
   // TypeScript still enforces typing here, so it doesn't know much about T
   // so it won't let you do much to it:
-  let x = param.length; // error
+  // let x = param.length; // error TS2339: Property 'length' does not exist on type 'T'
   return param;
 }
 let explicitGeneric = genericFunction<boolean>(true);
@@ -176,11 +176,11 @@ let genericValue2 = genericFunction(10); // returns number
 // null and undefinied are two different types
 let nullValue: null;
 nullValue = null;
-nullValue = 10;
+// nullValue = 10; // error TS2322: Type '10' is not assignable to type 'null'
 
 let undefinedValue: undefined;
 undefinedValue = undefined;
-undefinedValue = 11;
+// undefinedValue = 11; // error TS2322: Type '11' is not assignable to type 'undefined'
 
 // In strict null checking mode, the null and undefined values are not in the domain of
 // every type and are only assignable to themselves and any (the one exception being that
@@ -191,7 +191,7 @@ undefinedValue = 11;
 
 let notNullable: number;
 notNullable = 13;
-notNullable = null;
+// notNullable = null; // error TS2322: Type 'null' is not assignable to type 'number'
 
 // type aliases
 type FullName = string;

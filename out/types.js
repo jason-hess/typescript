@@ -1,39 +1,51 @@
+"use strict";
 // TypeScript is a typed superset of JavaScript that compiles to plain JavaScript
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 // boolean
-let isDone = false;
-let implicitIsDone = false;
+var isDone = false;
+var implicitIsDone = false;
 // number
 // As in JavaScript, all numbers in TypeScript are floating point values.
 // These floating point numbers get the type `number`. In addition to hexadecimal and decimal literals,
 // TypeScript also supports binary and octal literals introduced in ECMAScript 2015.
-let decimal = 6;
-let hex = 0xf00d;
-let binary = 0b1010;
-let octal = 0o744;
+var decimal = 6;
+var hex = 0xf00d;
+var binary = 10;
+var octal = 484;
 // string
-let color = "blue";
+var color = "blue";
 // can use single quotes like: `let color: string = 'red';`
-let age = 10;
+var age = 10;
 // template strings can be multi-line and\or substitute variables
-let theString = `This a template string
-${color}: ${age + 1}`;
+var theString = "This a template string\n" + color + ": " + (age + 1);
 // array
-let theList = [1, 2, 3]; // or: let anotherList: Array<number> = [1, 2, 3];
+var theList = [1, 2, 3]; // or: let anotherList: Array<number> = [1, 2, 3];
 // because arrays are JavaScript arrays, you can add elements to them and create holes in them
 theList[3] = 4;
 theList.push(5);
 theList[100] = 101;
-let hole = theList[99]; // sets hole to undefined
+var hole = theList[99]; // sets `hole` to undefined
 // Tuple types allow you to express an array where the type of a fixed number of elements is known,
 // but need not be the same and lets you specify type assertions on the elements.
-let firstTuple = ["key", 1];
+var firstTuple = ["key", 1];
 firstTuple[0] = "newKey";
 firstTuple[1] = 13;
 firstTuple = ["anotherKey", 22];
+// firstTuple[2] = undefined; // error TS2493: Tuple type '[string, number]' of length '2' has no element at index '2'.
 // firstTuple = [true, "jason"]; // error TS2322: Type 'string' is not assignable to type 'number'.
-let anArrayOfTypeUnion = [1, "key"];
-// can access an index outside of the legal range
-anArrayOfTypeUnion[3] = "true";
+var anArrayOfTypeUnion = [1, "key"]; // this is not a Tuple, it's an array
 // enum
 var Colour;
 (function (Colour) {
@@ -41,7 +53,7 @@ var Colour;
     Colour[Colour["Blue"] = 1] = "Blue";
     Colour[Colour["Green"] = 2] = "Green";
 })(Colour || (Colour = {}));
-let y = Colour.Red;
+var y = Colour.Red;
 // enums normally start with the value 0, but we can change this
 // to start at the value one:
 var Speed;
@@ -56,73 +68,87 @@ var AnotherEnum;
     AnotherEnum[AnotherEnum["ValueTwo"] = 13] = "ValueTwo";
 })(AnotherEnum || (AnotherEnum = {}));
 // we can convert from numeric to string value and back again
-let enumValue = AnotherEnum[13]; // enumValue = "ValueTwo"
-let enumNumberValue = AnotherEnum["ValueTwo"];
-let anotherEnumValue = 13;
+var enumValue = AnotherEnum[13]; // enumValue = "ValueTwo"
+var enumNumberValue = AnotherEnum["ValueTwo"];
+var anotherEnumValue = 13;
 // be careful
-let yetAnotherEnumValue = 12; // valid but falls out of the valid range.
-// untyped lets you opt-in and out-out of type checking as needed
-let z = "string";
+var yetAnotherEnumValue = 12; // valid but falls out of the valid range.
+// the any type lets you opt-in and out-out of type checking as needed
+var z = "string";
 z = 10;
 z = true;
-let untypedList = ["string", 10];
+var untypedList = ["string", 10];
 // null and undefined are two different values
 z = undefined;
 z = null;
 // void
-let t;
-let u = undefined;
+var t;
+var u = undefined;
 // void is only really useful for functions:
 function voidFunction() {
     // i don't return a value
 }
 // type inference
-let isAlsoDone = true;
-isAlsoDone = 100;
+// TypeScript will infer types for you
+var isAlsoDone = true;
+// isAlsoDone = 100; // error TS2322: Type '100' is not assignable to type 'boolean'
 // type assertions
 // A type assertion is like a type cast in other languages, but performs no special
 // checking or restructuring of data. It has no runtime impact, and is used purely
 // by the compiler. TypeScript assumes that you, the programmer, have performed any
 // special checks that you need.
-let aValue = "jason";
-let anotherLength = aValue.length;
-let aLength = aValue.length;
+var aValue = "jason";
+var anotherLength = aValue.length;
+var aLength = aValue.length;
 // when using TypeScript with JSX, only as-style assertions are allowed
 // use let instead of var whenever possible to prevent scope issues
-var tz = null;
+var tz = "value";
 // A union type describes a value that can be one of several types
 // If we have a value that has a union type, we can only access members that are common to all types in the union.
-let unionType = "true";
+var unionType = "true";
 unionType = true;
-unionType = 10; // error
-let anotherUnionType; // parens are optional
-let arrayUnionType; // or a required for precedence
-let unionOfNumberOrStringArray;
+// unionType = 10; // error TS2322: Type '10' is not assignable to type 'string | boolean'
+var anotherUnionType; // parens are optional
+var arrayUnionType; // or a required for precedence
+var unionOfNumberOrStringArray;
 // used in functions
 function unionTypeParameter(value, suffixOrPadding) {
     if (typeof suffixOrPadding == "boolean") {
-        let y = suffixOrPadding; // TypeScript infers the type of y as boolean here
+        var y_1 = suffixOrPadding; // TypeScript infers the type of y as boolean here
     }
     if (typeof suffixOrPadding == "string") {
     }
     return "";
 }
-// in most cases (assigning default values to variables and paramaters, and setting
+// in most cases (assigning default values to variables and parameters, and setting
 // function return values) type inferenece is straightforward
-let typeInferred = true;
+var typeInferred = true;
 // a best-possible-type algorithm is used to determine the type of more complex types:
-let typeInferredArray = [1, 2, null]; // number[]
-let typeInferredArray2 = ["1", 2]; // (string | number)[]
+var typeInferredArray = [1, 2, null]; // number[]
+var typeInferredArray2 = ["1", 2]; // (string | number)[]
 // sometimes you'll still need to explicitly state the type you're after
-class AnAnimal {
-}
-class Bear extends AnAnimal {
-    growl() { }
-}
-class Cheetah extends AnAnimal {
-}
-let typeInferredArray3 = [new Bear(), new Cheetah()]; // Bear[] ??
-let typeNotInferredArray = [new Bear(), new Cheetah()];
+var AnAnimal = /** @class */ (function () {
+    function AnAnimal() {
+    }
+    return AnAnimal;
+}());
+var Bear = /** @class */ (function (_super) {
+    __extends(Bear, _super);
+    function Bear() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Bear.prototype.growl = function () { };
+    return Bear;
+}(AnAnimal));
+var Cheetah = /** @class */ (function (_super) {
+    __extends(Cheetah, _super);
+    function Cheetah() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Cheetah;
+}(AnAnimal));
+var typeInferredArray3 = [new Bear(), new Cheetah()]; // Bear[] ??
+var typeNotInferredArray = [new Bear(), new Cheetah()];
 // When no best common type is found, the resulting inference is the empty object type, {}.
 // Because this type has no members, attempting to use any properties of it will cause an error.
 // This result allows you to still use the object in a type- agnostic manner, while providing type
@@ -131,8 +157,8 @@ let typeNotInferredArray = [new Bear(), new Cheetah()];
 // in which it is used.
 // For instance, in the following onmousedown is an event of type MouseEvent which means we can infer
 // mouseEvent is of type MouseEvent, which means buton does not exist
-window.onmousedown = mouseEvent => {
-    console.log(mouseEvent.buton); //<- Error
+window.onmousedown = function (mouseEvent) {
+    // console.log(mouseEvent.buton); // error TS2551: Property 'buton' does not exist on type 'MouseEvent'. Did you mean 'button'?
 };
 // Contextual typing applies in many cases. Common cases include arguments to function calls, right hand
 // sides of assignments, type assertions, members of object and array literals, and return statements.
@@ -149,29 +175,27 @@ function genericFunction(param) {
     // the type T has been captured so we can use it as a return type
     // TypeScript still enforces typing here, so it doesn't know much about T
     // so it won't let you do much to it:
-    let x = param.length; // error
+    // let x = param.length; // error TS2339: Property 'length' does not exist on type 'T'
     return param;
 }
-let explicitGeneric = genericFunction(true);
+var explicitGeneric = genericFunction(true);
 // the compiler can sometimes infer the type
-let genericValue = genericFunction("hello"); // returns string
-let genericValue2 = genericFunction(10); // returns number
+var genericValue = genericFunction("hello"); // returns string
+var genericValue2 = genericFunction(10); // returns number
 // null and undefinied are two different types
-let nullValue;
+var nullValue;
 nullValue = null;
-nullValue = 10;
-let undefinedValue;
+// nullValue = 10; // error TS2322: Type '10' is not assignable to type 'null'
+var undefinedValue;
 undefinedValue = undefined;
-undefinedValue = 11;
+// undefinedValue = 11; // error TS2322: Type '11' is not assignable to type 'undefined'
 // In strict null checking mode, the null and undefined values are not in the domain of
 // every type and are only assignable to themselves and any (the one exception being that
 // undefined is also assignable to void).So, whereas T and T | undefined are considered synonymous in
 // regular type checking mode (because undefined is considered a subtype of any T), they are different
 // types in strict type checking mode, and only T | undefined permits undefined values.The same is
 // true for the relationship of T to T | null.
-let notNullable;
+var notNullable;
 notNullable = 13;
-notNullable = null;
-let aFullName = "Jason";
-let aLastName = aFullName;
-//# sourceMappingURL=types.js.map
+var aFullName = "Jason";
+var aLastName = aFullName;
