@@ -78,10 +78,11 @@ var z = "string";
 z = 10;
 z = true;
 var untypedList = ["string", 10];
-// null and undefined are two different values
+// null and undefined are two different values (and there is a type null and a type undefined)
 z = undefined;
 z = null;
-// void
+// The --strictNullChecks compile flag removes null from the domain of every type
+// void is the absence of any type.  A variable of type void can only be undefined.
 var t;
 var u = undefined;
 // void is only really useful for functions:
