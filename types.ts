@@ -200,3 +200,26 @@ type FullName = string;
 let aFullName: FullName = "Jason";
 type LastName = string;
 let aLastName = aFullName;
+
+// The `never` type represents the type of values that never occur
+// For example, functions that never return or always throws an exception
+// The never type is a subtype type to every type and no type is a subtype or assignable to never.
+function infiniteLoop(): never {
+  while (true) {}
+}
+
+// The `object` type is a type that represents a non-primitive type
+function operateOnObject(o: object) {
+  return;
+}
+// operateOnObject(10); // error TS2345: Argument of type '10' is not assignable to parameter of type 'object'.
+operateOnObject(new Object());
+
+// Type assertions
+// A type assertion is like a type cast in other languages, but performs
+// no special checking or restructuring of data. It has no runtime impact,
+// and is used purely by the compiler.
+// Type assertions have two forms. One is the “angle-bracket” syntax:
+let aString = (<string>"10").length;
+// And the other is the as-syntax:
+let anotherString = ("10" as string).length;
