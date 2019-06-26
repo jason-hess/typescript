@@ -1,8 +1,9 @@
 "use strict";
 // TypeScript is a typed superset of JavaScript that compiles to plain JavaScript
+// Types
 // boolean
-let isDone = false;
-let implicitIsDone = false;
+let isBoolean = false;
+let implicitIsBoolean = false;
 // number
 // As in JavaScript, all numbers in TypeScript are floating point values.
 // These floating point numbers get the type `number`. In addition to hexadecimal and decimal literals,

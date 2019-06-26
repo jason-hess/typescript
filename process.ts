@@ -1,5 +1,8 @@
-let theList2: number[] = [1, 2, 3]; // or: let anotherList: Array<number> = [1, 2, 3];
-// because arrays are JavaScript arrays, you can add elements to them and create holes in them
-let hole2: number = theList2[99]; // sets `hole` to undefined
+function doSomething(aString: string) {
+  const length = aString.length;
+  return length;
+}
 
-console.log(hole2);
+let lengthOfDoSomething = doSomething("10");
+
+console.log(lengthOfDoSomething);

@@ -1,6 +1,17 @@
 "use strict";
 // one problem with JavaScript is that variables by default don't have
 // limited scope.
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var _a, _b;
 // function f(shouldInitialize: boolean) {
 //   x = 11; // JS lets you access variables declared in the function
@@ -127,7 +138,38 @@ var firstValue = theArray[0], secondValue = theArray[1];
 _a = [secondValue, firstValue], firstValue = _a[0], secondValue = _a[1];
 console.log(firstValue);
 console.log(secondValue);
-// object destruct
+// array destructuring as part of a function parameter
+function breakArrayApart(_a) {
+    var first = _a[0], second = _a[1];
+    return first;
+}
+// can create a variable for the remainder of the array:
+var largeArray = [0, 1, 2, 3, 4];
+var firstElement = largeArray[0], secondElement = largeArray[1], remainingElements = largeArray.slice(2);
+// remainingElements is a number[] with [2,3,4]
+console.log(remainingElements.length);
+// or ignore remaining elements
+var theFirstElement = [1, 2, 3, 4][0];
+// or pick and choose
+var _c = [1, 2, 3, 4], theSecondElement = _c[1], fourthElement = _c[3];
+// Tuples can also be destructured
+var aTuple = ["10", 10];
+var asString = aTuple[0], asNumber = aTuple[1];
+var theStringAsConstant = asString;
+// You can also generate a new tuple with the remainder of the tuple:
+var aLargeTuple = [
+    "10",
+    "ten",
+    "Ten",
+    "TEN",
+    10
+];
+var tenAsString = aLargeTuple[0], remainderTuple = aLargeTuple.slice(1);
+var tenAsNumber = remainderTuple[3];
+// or ignore elements
+var firstTupleElement = aLargeTuple[0];
+var secondTupleELement = aLargeTuple[1];
+// object destructuring
 var o = {
     a: "1",
     b: 2

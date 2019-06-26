@@ -144,7 +144,44 @@ let [firstValue, secondValue] = theArray;
 console.log(firstValue);
 console.log(secondValue);
 
-// object destruct
+// array destructuring as part of a function parameter
+function breakArrayApart([first, second]: [number, number]) {
+  return first;
+}
+
+// can create a variable for the remainder of the array:
+let largeArray = [0, 1, 2, 3, 4];
+let [firstElement, secondElement, ...remainingElements] = largeArray;
+// remainingElements is a number[] with [2,3,4]
+console.log(remainingElements.length);
+
+// or ignore remaining elements
+let [theFirstElement] = [1, 2, 3, 4];
+
+// or pick and choose
+let [, theSecondElement, , fourthElement] = [1, 2, 3, 4];
+
+// Tuples can also be destructured
+let aTuple: [string, number] = ["10", 10];
+let [asString, asNumber] = aTuple;
+const theStringAsConstant: string = asString;
+
+// You can also generate a new tuple with the remainder of the tuple:
+let aLargeTuple: [string, string, string, string, number] = [
+  "10",
+  "ten",
+  "Ten",
+  "TEN",
+  10
+];
+let [tenAsString, ...remainderTuple] = aLargeTuple;
+let tenAsNumber: number = remainderTuple[3];
+
+// or ignore elements
+let [firstTupleElement] = aLargeTuple;
+let [, secondTupleELement] = aLargeTuple;
+
+// object destructuring
 let o = {
   a: "1",
   b: 2

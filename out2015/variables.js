@@ -120,7 +120,37 @@ let [firstValue, secondValue] = theArray;
 [firstValue, secondValue] = [secondValue, firstValue];
 console.log(firstValue);
 console.log(secondValue);
-// object destruct
+// array destructuring as part of a function parameter
+function breakArrayApart([first, second]) {
+    return first;
+}
+// can create a variable for the remainder of the array:
+let largeArray = [0, 1, 2, 3, 4];
+let [firstElement, secondElement, ...remainingElements] = largeArray;
+// remainingElements is a number[] with [2,3,4]
+console.log(remainingElements.length);
+// or ignore remaining elements
+let [theFirstElement] = [1, 2, 3, 4];
+// or pick and choose
+let [, theSecondElement, , fourthElement] = [1, 2, 3, 4];
+// Tuples can also be destructured
+let aTuple = ["10", 10];
+let [asString, asNumber] = aTuple;
+const theStringAsConstant = asString;
+// You can also generate a new tuple with the remainder of the tuple:
+let aLargeTuple = [
+    "10",
+    "ten",
+    "Ten",
+    "TEN",
+    10
+];
+let [tenAsString, ...remainderTuple] = aLargeTuple;
+let tenAsNumber = remainderTuple[3];
+// or ignore elements
+let [firstTupleElement] = aLargeTuple;
+let [, secondTupleELement] = aLargeTuple;
+// object destructuring
 let o = {
     a: "1",
     b: 2
@@ -155,3 +185,34 @@ function jason(x, ...theRest) { }
 // of several types:
 let x = 10;
 x = "10";
+function sumMatrix2(matrix) {
+    var sum = 0;
+    for (var i = 0; i < matrix.length; i++) {
+        var currentRow = matrix[i];
+        for (var i = 0; i < currentRow.length; i++) {
+            sum += currentRow[i];
+        }
+    }
+    return sum;
+}
+let first = [1, 2];
+let second = [3, 4];
+let bothPlus = [0, ...first, ...second, 5];
+class Restaurant {
+    constructor() {
+        this.call = function () { };
+        this.food = "";
+        this.price = "";
+        this.ambience = "";
+    }
+}
+let defaults = {
+    food: "spicy",
+    price: "$$",
+    ambiance: "noisy"
+};
+let defaults2 = new Restaurant();
+defaults2.call();
+let search = Object.assign({ food: "rich" }, defaults2, { size: 10 });
+search.size = 50;
+search.call();

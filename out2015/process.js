@@ -1,13 +1,7 @@
 "use strict";
-function greeter(name) {
-    return "Hello " + name + "!";
+function doSomething(aString) {
+    const length = aString.length;
+    return length;
 }
-class Teacher {
-    constructor(firstName, lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.fullName = firstName + " " + lastName;
-    }
-}
-let aTeacher = new Teacher("Jason", "Hess");
-console.log(aTeacher.fullName);
+let lengthOfDoSomething = doSomething("10");
+console.log(lengthOfDoSomething);
