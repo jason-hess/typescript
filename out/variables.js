@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var _a, _b;
 // one problem with JavaScript is that variables by default don't have
 // limited scope.
@@ -125,3 +136,35 @@ function jason(x) {
 // of several types:
 var x = 10;
 x = "10";
+function sumMatrix2(matrix) {
+    var sum = 0;
+    for (var i = 0; i < matrix.length; i++) {
+        var currentRow = matrix[i];
+        for (var i = 0; i < currentRow.length; i++) {
+            sum += currentRow[i];
+        }
+    }
+    return sum;
+}
+var first = [1, 2];
+var second = [3, 4];
+var bothPlus = [0].concat(first, second, [5]);
+var Restaurant = /** @class */ (function () {
+    function Restaurant() {
+        this.call = function () { };
+        this.food = "";
+        this.price = "";
+        this.ambience = "";
+    }
+    return Restaurant;
+}());
+var defaults = {
+    food: "spicy",
+    price: "$$",
+    ambiance: "noisy"
+};
+var defaults2 = new Restaurant();
+defaults2.call();
+var search = __assign({ food: "rich" }, defaults2, { size: 10 });
+search.size = 50;
+search.call();

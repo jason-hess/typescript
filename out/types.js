@@ -13,9 +13,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+// Types
 // boolean
-var isDone = false;
-var implicitIsDone = false;
+var isBoolean = false;
+var implicitIsBoolean = false;
 // number
 // As in JavaScript, all numbers in TypeScript are floating point values.
 // These floating point numbers get the type `number`. In addition to hexadecimal and decimal literals,

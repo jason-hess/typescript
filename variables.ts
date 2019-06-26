@@ -135,3 +135,44 @@ function jason(x: string, ...theRest) {}
 // of several types:
 let x: number | string = 10;
 x = "10";
+
+function sumMatrix2(matrix: number[][]) {
+  var sum = 0;
+  for (var i = 0; i < matrix.length; i++) {
+    var currentRow = matrix[i];
+    for (var i = 0; i < currentRow.length; i++) {
+      sum += currentRow[i];
+    }
+  }
+
+  return sum;
+}
+
+let first = [1, 2];
+let second = [3, 4];
+let bothPlus = [0, ...first, ...second, 5];
+
+class Restaurant {
+  food: string;
+  price: string;
+  ambience: string;
+
+  constructor() {
+    this.food = "";
+    this.price = "";
+    this.ambience = "";
+  }
+
+  call = function() {};
+}
+
+let defaults = {
+  food: "spicy",
+  price: "$$",
+  ambiance: "noisy"
+};
+let defaults2 = new Restaurant();
+defaults2.call();
+let search = { food: "rich", ...defaults2, size: 10 };
+search.size = 50;
+search.call();

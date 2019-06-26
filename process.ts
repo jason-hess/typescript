@@ -1,19 +1,5 @@
-function greeter(name: string) {
-  return "Hello " + name + "!";
-}
+let theList2: number[] = [1, 2, 3]; // or: let anotherList: Array<number> = [1, 2, 3];
+// because arrays are JavaScript arrays, you can add elements to them and create holes in them
+let hole2: number = theList2[99]; // sets `hole` to undefined
 
-interface Person {
-  firstName: string;
-  lastName: string;
-}
-
-class Teacher {
-  fullName: string;
-  constructor(private firstName: string, private lastName: string) {
-    this.fullName = firstName + " " + lastName;
-  }
-}
-
-let aTeacher = new Teacher("Jason", "Hess");
-
-console.log(aTeacher.fullName);
+console.log(hole2);

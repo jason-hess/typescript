@@ -1,8 +1,10 @@
 ﻿// TypeScript is a typed superset of JavaScript that compiles to plain JavaScript
 
+// Types
+
 // boolean
-let isDone: boolean = false;
-let implicitIsDone = false;
+let isBoolean: boolean = false;
+let implicitIsBoolean = false;
 
 // number
 // As in JavaScript, all numbers in TypeScript are floating point values.

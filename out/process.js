@@ -1,14 +1,5 @@
 "use strict";
-function greeter(name) {
-    return "Hello " + name + "!";
-}
-var Teacher = /** @class */ (function () {
-    function Teacher(firstName, lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.fullName = firstName + " " + lastName;
-    }
-    return Teacher;
-}());
-var aTeacher = new Teacher("Jason", "Hess");
-console.log(aTeacher.fullName);
+var theList2 = [1, 2, 3]; // or: let anotherList: Array<number> = [1, 2, 3];
+// because arrays are JavaScript arrays, you can add elements to them and create holes in them
+var hole2 = theList2[99]; // sets `hole` to undefined
+console.log(hole2);
