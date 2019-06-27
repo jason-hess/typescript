@@ -153,14 +153,19 @@ let [, secondTupleELement] = aLargeTuple;
 // object destructuring
 let o = {
     a: "1",
-    b: 2
+    b: 2,
+    c: true
 };
+// notice you can skip c if you don't need it
+// notice: the names of the variables must match the name of the properties
 let { a, b } = o;
-// property renaming
-//let {a: newName1, b: newName2} = o;
+a = "1";
+// you can assign new variable names with a more complex syntax:
+let { a: newName1, b: newName2 } = o;
 //// is the same as
 //let newName1 = o.a;
 //let newName2 = o.b;
+// assignment without declaration
 ({ a, b } = { a: "baz", b: 101 });
 // object destructuring with default values
 function someFunction(wholeObject) {
@@ -180,7 +185,51 @@ function yetAnotherFunction({ a, b } = { a: "", b: 2 }) {
     console.log(b);
 }
 yetAnotherFunction();
-function jason(x, ...theRest) { }
+// Typescript also supports the opposite of destructuring: spread:
+let firstArray = [1, 2];
+let secondArray = [3, 4];
+let union = [...firstArray, ...secondArray];
+let additionalElements = [0, ...firstArray, ...secondArray, 5];
+// you can also spread objects:
+let someObject = { flavour: "bitter", temperature: "warm" };
+let anotherObject = Object.assign({ colour: "blue" }, someObject);
+anotherObject.flavour = "sweet";
+anotherObject.colour = "red";
+// be careful though because in the spread above that creates
+// `anotherObject`, the variables on the right will overwrite variables on the left
+// for example:
+anotherObject = Object.assign({ flavour: "sour" }, anotherObject);
+// at this point anotherObject.flavour is now sweet.
+// object spread will only support enumerable properties (i.e. not functions)
+// of an object
+// for example:
+class C {
+    constructor() {
+        this.p = 12;
+    }
+    m() { }
+}
+let c = new C();
+let clone = Object.assign({}, c);
+clone.p; // ok
+// clone.m(); // error TS2339: Property 'm' does not exist on type '{ p: number; }'.
+class D {
+    constructor() {
+        this.p = 12;
+        this.m = function () {
+            return 12;
+        };
+    }
+}
+let d = new D();
+let dClone = Object.assign({}, d);
+dClone.p; // ok
+dClone.m(); //
+dClone.m = function () {
+    return 10;
+};
+console.log(dClone.m());
+// Second, the Typescript compiler doesn’t allow spreads of type parameters from generic functions. That feature is expected in future versions of the language.
 // TypeScript also support union types to specify a variable can be one
 // of several types:
 let x = 10;
