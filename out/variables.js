@@ -172,14 +172,19 @@ var secondTupleELement = aLargeTuple[1];
 // object destructuring
 var o = {
     a: "1",
-    b: 2
+    b: 2,
+    c: true
 };
+// notice you can skip c if you don't need it
+// notice: the names of the variables must match the name of the properties
 var a = o.a, b = o.b;
-// property renaming
-//let {a: newName1, b: newName2} = o;
+a = "1";
+// you can assign new variable names with a more complex syntax:
+var newName1 = o.a, newName2 = o.b;
 //// is the same as
 //let newName1 = o.a;
 //let newName2 = o.b;
+// assignment without declaration
 (_b = { a: "baz", b: 101 }, a = _b.a, b = _b.b);
 // object destructuring with default values
 function someFunction(wholeObject) {
@@ -200,12 +205,53 @@ function yetAnotherFunction(_a) {
     console.log(b);
 }
 yetAnotherFunction();
-function jason(x) {
-    var theRest = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        theRest[_i - 1] = arguments[_i];
+// Typescript also supports the opposite of destructuring: spread:
+var firstArray = [1, 2];
+var secondArray = [3, 4];
+var union = firstArray.concat(secondArray);
+var additionalElements = [0].concat(firstArray, secondArray, [5]);
+// you can also spread objects:
+var someObject = { flavour: "bitter", temperature: "warm" };
+var anotherObject = __assign({ colour: "blue" }, someObject);
+anotherObject.flavour = "sweet";
+anotherObject.colour = "red";
+// be careful though because in the spread above that creates
+// `anotherObject`, the variables on the right will overwrite variables on the left
+// for example:
+anotherObject = __assign({ flavour: "sour" }, anotherObject);
+// at this point anotherObject.flavour is now sweet.
+// object spread will only support enumerable properties (i.e. not functions)
+// of an object
+// for example:
+var C = /** @class */ (function () {
+    function C() {
+        this.p = 12;
     }
-}
+    C.prototype.m = function () { };
+    return C;
+}());
+var c = new C();
+var clone = __assign({}, c);
+clone.p; // ok
+// clone.m(); // error TS2339: Property 'm' does not exist on type '{ p: number; }'.
+var D = /** @class */ (function () {
+    function D() {
+        this.p = 12;
+        this.m = function () {
+            return 12;
+        };
+    }
+    return D;
+}());
+var d = new D();
+var dClone = __assign({}, d);
+dClone.p; // ok
+dClone.m(); //
+dClone.m = function () {
+    return 10;
+};
+console.log(dClone.m());
+// Second, the Typescript compiler doesn’t allow spreads of type parameters from generic functions. That feature is expected in future versions of the language.
 // TypeScript also support union types to specify a variable can be one
 // of several types:
 var x = 10;
