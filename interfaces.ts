@@ -61,12 +61,12 @@ interface IFunction {
 // this lets us describe the shape of a variable
 // note the parameter name isn't enforced to be the
 // same, just the type
-let theFunction: IFunction = function(j: number) {
+let theFunction: IFunction = function (j: number) {
   console.log(j++);
   return "finished";
 };
 // the parameter can be type inferred
-let theOtherFunction: IFunction = function(j) {
+let theOtherFunction: IFunction = function (j) {
   console.log(j++);
   return "finished";
 };
@@ -77,7 +77,7 @@ let theOtherFunction: IFunction = function(j) {
 
 // inferrence can also go the other way
 // here inferredFunction is known to take a number and return a boolean
-let inferredFunction = function(j: number): boolean {
+let inferredFunction = function (j: number): boolean {
   return true;
 };
 // let returnValue: string = inferredFunction("hello"); // error TS2345: Argument of type '"hello"' is not assignable to parameter of type 'number'
@@ -149,6 +149,7 @@ class Dog implements IAnimal {
   type: string;
   constructor() {
     this.type = "Dog";
+    this.age = 10;
   }
 
   growOlder() {
@@ -174,13 +175,13 @@ interface IHybridInterface {
   setValue(value: number);
   value: boolean;
 }
-let hybridInstance = function(): IHybridInterface {
-  const counter = <IHybridInterface>function(value: number) {
+let hybridInstance = function (): IHybridInterface {
+  const counter = <IHybridInterface>function (value: number) {
     return true;
   };
   counter[10] = true;
   counter.value = true;
-  counter.setValue = v => {};
+  counter.setValue = v => { };
   return counter;
 };
 
