@@ -88,6 +88,7 @@ var SubThing = /** @class */ (function (_super) {
 var Dog = /** @class */ (function () {
     function Dog() {
         this.type = "Dog";
+        this.age = 10;
     }
     Dog.prototype.growOlder = function () {
         this.age++;
