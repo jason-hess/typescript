@@ -1,5 +1,5 @@
-function doSomething(aString: string) {
-  const length = aString.length;
+function doSomething(aString: string): number {
+  const length = aString.replace("1", "").length;
   return length;
 }
 
