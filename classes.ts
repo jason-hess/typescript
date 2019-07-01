@@ -112,4 +112,100 @@ interface IPoint3D extends JasonPoint {
 let point3D: IPoint3D = { x: 1, y: 2, z: 3 };
 let notValidPoint = new IPoint3D();
 
-// TypeScript is a structural type system. When we compare two different types, regardless of where they came from, if the types of all members are compatible, then we say the types themselves are compatible.
+// TypeScript is a structural type system. When we compare two different types,
+// regardless of where they came from, if the types of all members are compatible,
+// then we say the types themselves are compatible.
+
+class Employee {
+  name: string = "";
+}
+
+class Animal {
+  name: string = "";
+}
+
+let anEmployee = new Employee();
+let anAnimal = new Animal();
+anEmployee = anAnimal; // this is fine.
+
+// However, when comparing types that have private and protected members,
+// we treat these types differently. For two types to be considered compatible,
+// if one of them has a private member, then the other must have a private member
+// that originated in the same declaration. The same applies to protected members.
+
+class EmployeeEx {
+  private name: string = "";
+}
+
+class AnimalEx {
+  private name: string = "";
+}
+
+var anEmployeeEx = new EmployeeEx();
+var anAnimalEx: AnimalEx = new AnimalEx();
+// because each of these classes has a private property that don't originate from the same
+// declaration, they are not compatible
+// anEmployeeEx = anAnimalEx; // error TS2322: Type 'AnimalEx' is not assignable to type 'EmployeeEx'
+
+// protected members can be accessed from derived classes
+
+class Person {
+  protected name: string = "";
+
+  protected getName(): string {
+    return this.name;
+  }
+}
+
+class AgedPerson extends Person {
+  private age: number;
+  // readonly properties must be initialised and can never be changed
+  readonly heightInCentimetres: number = 10;
+
+  // constructors can also be protected so they can't be called except by base classes
+  protected constructor() {
+    super();
+    this.age = 10;
+  }
+
+  getAge(): string {
+    // this.heightInCentimetres++; // error TS2540: Cannot assign to 'heightInCentimetres' because it is a read-only property.
+    return this.name + " is " + this.age + " years old";
+  }
+}
+
+// parameter properties are declared and initialised in one place
+class Octopus {
+  constructor(
+    private readonly name: string,
+    protected age: number,
+    public readonly colour: string
+  ) {
+    this.name = name;
+  }
+
+  getName(): string {
+    return this.name;
+  }
+}
+
+// accessors
+// TypeScript supports getters/setters as a way of intercepting accesses to a member of an object
+
+class ClassWithGetter {
+  private _age: number = 10;
+
+  get age() {
+    return this._age;
+  }
+
+  set age(value: number) {
+    this._age = value;
+  }
+}
+
+let aClassWithGetter = new ClassWithGetter();
+aClassWithGetter.age = 11;
+console.log(aClassWithGetter.age);
+
+//First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported. Second, accessors with a get and no set are automatically inferred to be readonly. This is helpful when generating a .d.ts file from your code, because users of your property can see that they can’t change it.
