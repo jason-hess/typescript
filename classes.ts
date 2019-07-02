@@ -193,7 +193,7 @@ class Octopus {
 // TypeScript supports getters/setters as a way of intercepting accesses to a member of an object
 
 class ClassWithGetter {
-  private _age: number = 10;
+  private _age: number = 10; // note: this needs to have a different name to the properties
 
   get age() {
     return this._age;
@@ -208,4 +208,34 @@ let aClassWithGetter = new ClassWithGetter();
 aClassWithGetter.age = 11;
 console.log(aClassWithGetter.age);
 
-//First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported. Second, accessors with a get and no set are automatically inferred to be readonly. This is helpful when generating a .d.ts file from your code, because users of your property can see that they can’t change it.
+//First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported.
+// Second, accessors with a get and no set are automatically inferred to be readonly.
+// This is helpful when generating a .d.ts file from your code, because users of your property can see that they can’t change it.
+
+// static properties
+// those that are visible on the class itself rather than on the instances
+// to access the static property, you prepend it with the name of the class
+class TheClassWithStaticProperty2 {
+  static className: string = "";
+}
+
+console.log(TheClassWithStaticProperty2.className);
+
+// abstract classes are classes that cannot be instantiated
+abstract class AbstractConcept {
+  abstract anAbstractMethod(): void; // abstract methods can be defined in an abstract class.  child classes must define an implementation
+}
+// let anAbstractConcept = new AbstractConcept(); // error TS2511: Cannot create an instance of an abstract class.
+
+class ConcreteConcept extends AbstractConcept {
+  // abstract aMethod(): number; // error TS1244: Abstract methods can only appear within an abstract class.
+
+  anAbstractMethod(): void {
+    throw new Error("Method not implemented.");
+  }
+}
+let aConcreteConcept = new ConcreteConcept();
+
+// Methods within an abstract class that are marked as abstract do not contain an implementation and must be implemented in derived classes.
+// Abstract methods share a similar syntax to interface methods. Both define the signature of a method without including a method body.
+// However, abstract methods must include the abstract keyword and may optionally include access modifiers.

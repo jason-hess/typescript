@@ -199,7 +199,7 @@ var Octopus = /** @class */ (function () {
 // TypeScript supports getters/setters as a way of intercepting accesses to a member of an object
 var ClassWithGetter = /** @class */ (function () {
     function ClassWithGetter() {
-        this._age = 10;
+        this._age = 10; // note: this needs to have a different name to the properties
     }
     Object.defineProperty(ClassWithGetter.prototype, "age", {
         get: function () {
@@ -216,4 +216,38 @@ var ClassWithGetter = /** @class */ (function () {
 var aClassWithGetter = new ClassWithGetter();
 aClassWithGetter.age = 11;
 console.log(aClassWithGetter.age);
-//First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported. Second, accessors with a get and no set are automatically inferred to be readonly. This is helpful when generating a .d.ts file from your code, because users of your property can see that they can’t change it.
+//First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported.
+// Second, accessors with a get and no set are automatically inferred to be readonly.
+// This is helpful when generating a .d.ts file from your code, because users of your property can see that they can’t change it.
+// static properties
+// those that are visible on the class itself rather than on the instances
+// to access the static property, you prepend it with the name of the class
+var TheClassWithStaticProperty2 = /** @class */ (function () {
+    function TheClassWithStaticProperty2() {
+    }
+    TheClassWithStaticProperty2.className = "";
+    return TheClassWithStaticProperty2;
+}());
+console.log(TheClassWithStaticProperty2.className);
+// abstract classes are classes that cannot be instantiated
+var AbstractConcept = /** @class */ (function () {
+    function AbstractConcept() {
+    }
+    return AbstractConcept;
+}());
+// let anAbstractConcept = new AbstractConcept(); // error TS2511: Cannot create an instance of an abstract class.
+var ConcreteConcept = /** @class */ (function (_super) {
+    __extends(ConcreteConcept, _super);
+    function ConcreteConcept() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    // abstract aMethod(): number; // error TS1244: Abstract methods can only appear within an abstract class.
+    ConcreteConcept.prototype.anAbstractMethod = function () {
+        throw new Error("Method not implemented.");
+    };
+    return ConcreteConcept;
+}(AbstractConcept));
+var aConcreteConcept = new ConcreteConcept();
+// Methods within an abstract class that are marked as abstract do not contain an implementation and must be implemented in derived classes.
+// Abstract methods share a similar syntax to interface methods. Both define the signature of a method without including a method body.
+// However, abstract methods must include the abstract keyword and may optionally include access modifiers.

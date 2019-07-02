@@ -1,8 +1,22 @@
-function doSomething(aString: string): number {
-  const length = aString.replace("1", "").length;
-  return length;
+class Greeter {
+  static standardGreeting = "Hello, there";
+  greeting: string;
+  greet() {
+    if (this.greeting) {
+      return "Hello, " + this.greeting;
+    } else {
+      return Greeter.standardGreeting;
+    }
+  }
 }
 
-let lengthOfDoSomething = doSomething("10");
+let greeter1: Greeter;
+greeter1 = new Greeter();
+console.log(greeter1.greet());
 
-console.log(lengthOfDoSomething);
+let greeterMaker: typeof Greeter = Greeter;
+greeterMaker.standardGreeting = "Hey there!";
+
+let greeter2: Greeter = new greeterMaker();
+console.log(greeter2.greet());
+console.log(greeter1.greet());
