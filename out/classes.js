@@ -34,7 +34,7 @@ var ChildGreeter = /** @class */ (function (_super) {
     __extends(ChildGreeter, _super);
     function ChildGreeter(age) {
         var _this = _super.call(this, "Jason") || this;
-        _this.age = age;
+        _this.age = age; // super() must be called before accessing `this`
         return _this;
     }
     ChildGreeter.prototype.sayAge = function () {
@@ -43,16 +43,15 @@ var ChildGreeter = /** @class */ (function (_super) {
     return ChildGreeter;
 }(Greeter));
 var agedPerson = new ChildGreeter(92);
-agedPerson.greet();
-agedPerson.sayAge();
-var anotherPerson = agedPerson;
+agedPerson.greet(); // defined on parent class
+agedPerson.sayAge(); // defied on child class
+var anotherPerson = agedPerson; // variable of type parent can hold child instances
 // overriding methods
 var OverridingGreeter = /** @class */ (function (_super) {
     __extends(OverridingGreeter, _super);
     function OverridingGreeter(name, age) {
         var _this = _super.call(this, name) || this;
-        _this.year = 10; // you can explictly declare a property as `public`
-        _this.age = age; // super() must be called before member access with `this`
+        _this.age = age;
         return _this;
     }
     // this implementation overrides the base class implementation
@@ -61,9 +60,17 @@ var OverridingGreeter = /** @class */ (function (_super) {
     };
     return OverridingGreeter;
 }(Greeter));
-// Member visibility
-// Members are public by default
-greeter.greeting = "123";
+var MemberVisibility = /** @class */ (function () {
+    function MemberVisibility() {
+        this.age = 10; // Members are public by default
+        this.name = ""; // protected properties can be accessed by child classes
+        this.count = 1; // properties can be marked as private so they are not accessible outside the class (or by child classes)
+    }
+    return MemberVisibility;
+}());
+var aMemberVisibility = new MemberVisibility();
+aMemberVisibility.age = 11;
+// aMemberVisibility.count = 13; // error TS2341: Property 'count' is private and only accessible within class 'MemberVisibility'
 // Parameter Properties
 // Properties can be declared in the constructor of the class
 // to save you the time of having to create a parameter for the
@@ -84,7 +91,7 @@ var YetAnotherClass = /** @class */ (function () {
     }
     Object.defineProperty(YetAnotherClass.prototype, "name", {
         get: function () {
-            return this.myName;
+            return this.myName; // property and function need different names
         },
         enumerable: true,
         configurable: true
@@ -92,7 +99,7 @@ var YetAnotherClass = /** @class */ (function () {
     return YetAnotherClass;
 }());
 var theName = new YetAnotherClass("Jason").name;
-// Static Members - Similarly to prepending a variable name with *this*, you
+// Static Members - Similarly to prepending a variable name with `this`, you
 // can prepend it with the class name to access Class static members
 var StaticMembersClass = /** @class */ (function () {
     function StaticMembersClass() {
@@ -101,6 +108,7 @@ var StaticMembersClass = /** @class */ (function () {
     StaticMembersClass.theMember = 10;
     return StaticMembersClass;
 }());
+StaticMembersClass.theMember++;
 // Abstract classes are classes that can be derived from but cannot be
 // instantiated
 var NotInstantiatable = /** @class */ (function () {
@@ -216,7 +224,7 @@ var ClassWithGetter = /** @class */ (function () {
 var aClassWithGetter = new ClassWithGetter();
 aClassWithGetter.age = 11;
 console.log(aClassWithGetter.age);
-//First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported.
+// First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported.
 // Second, accessors with a get and no set are automatically inferred to be readonly.
 // This is helpful when generating a .d.ts file from your code, because users of your property can see that they can’t change it.
 // static properties

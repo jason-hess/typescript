@@ -11,6 +11,7 @@ class Greeter {
   constructor(message: string) {
     this.greeting = message; // member access is done with the `this` operator
   }
+
   greet(): string {
     return `Hello, ${this.greeting}`;
   }
@@ -23,39 +24,44 @@ class ChildGreeter extends Greeter {
   private age: number;
 
   constructor(age: number) {
-    super("Jason");
-    this.age = age;
+    super("Jason"); // super must be called if a constructor is defined
+    this.age = age; // super() must be called before accessing `this`
   }
 
-  sayAge(): string {
+  public sayAge(): string {
     return `I'm ${this.age} years old`;
   }
 }
 
 let agedPerson = new ChildGreeter(92);
-agedPerson.greet();
-agedPerson.sayAge();
-let anotherPerson: Greeter = agedPerson;
+agedPerson.greet(); // defined on parent class
+agedPerson.sayAge(); // defied on child class
+let anotherPerson: Greeter = agedPerson; // variable of type parent can hold child instances
 
 // overriding methods
 class OverridingGreeter extends Greeter {
   private age: number;
-  public year: number = 10; // you can explictly declare a property as `public`
 
   constructor(name: string, age: number) {
-    super(name); // super() must be called in the derived constructor - if it exists
-    this.age = age; // super() must be called before member access with `this`
+    super(name);
+    this.age = age;
   }
 
   // this implementation overrides the base class implementation
-  greet() {
+  public greet() {
     return `You're ${this.age}!`;
   }
 }
 
-// Member visibility
-// Members are public by default
-greeter.greeting = "123";
+class MemberVisibility {
+  age: number = 10; // Members are public by default
+  protected name: string = ""; // protected properties can be accessed by child classes
+  private count: number = 1; // properties can be marked as private so they are not accessible outside the class (or by child classes)
+}
+
+let aMemberVisibility = new MemberVisibility();
+aMemberVisibility.age = 11;
+// aMemberVisibility.count = 13; // error TS2341: Property 'count' is private and only accessible within class 'MemberVisibility'
 
 // Parameter Properties
 // Properties can be declared in the constructor of the class
@@ -64,7 +70,7 @@ greeter.greeting = "123";
 class AnotherClass {
   constructor(private myName: string) {}
 
-  greet(): string {
+  public greet(): string {
     return `Hello, ${this.myName}!`;
   }
 }
@@ -74,35 +80,37 @@ class YetAnotherClass {
   constructor(private myName: string) {}
 
   get name() {
-    return this.myName;
+    return this.myName; // property and function need different names
   }
 }
 
 let theName = new YetAnotherClass("Jason").name;
 
-// Static Members - Similarly to prepending a variable name with *this*, you
+// Static Members - Similarly to prepending a variable name with `this`, you
 // can prepend it with the class name to access Class static members
 class StaticMembersClass {
-  static theMember: number = 10;
-  x: number;
+  public static theMember: number = 10;
+  public x: number;
   constructor() {
     this.x = StaticMembersClass.theMember;
   }
 }
 
+StaticMembersClass.theMember++;
+
 // Abstract classes are classes that can be derived from but cannot be
 // instantiated
 abstract class NotInstantiatable {
   // abstract methods must be implemented by derived classes
-  abstract print(): string;
+  public abstract print(): string;
 }
 
 let instance: NotInstantiatable = new NotInstantiatable();
 
 // Interfaces can also extend classes to define constraints on types
 class JasonPoint {
-  x: number;
-  y: number;
+  public x: number;
+  public y: number;
 }
 
 interface IPoint3D extends JasonPoint {
@@ -117,11 +125,11 @@ let notValidPoint = new IPoint3D();
 // then we say the types themselves are compatible.
 
 class Employee {
-  name: string = "";
+  public name: string = "";
 }
 
 class Animal {
-  name: string = "";
+  public name: string = "";
 }
 
 let anEmployee = new Employee();
@@ -141,8 +149,8 @@ class AnimalEx {
   private name: string = "";
 }
 
-var anEmployeeEx = new EmployeeEx();
-var anAnimalEx: AnimalEx = new AnimalEx();
+let anEmployeeEx = new EmployeeEx();
+let anAnimalEx: AnimalEx = new AnimalEx();
 // because each of these classes has a private property that don't originate from the same
 // declaration, they are not compatible
 // anEmployeeEx = anAnimalEx; // error TS2322: Type 'AnimalEx' is not assignable to type 'EmployeeEx'
@@ -158,9 +166,9 @@ class Person {
 }
 
 class AgedPerson extends Person {
-  private age: number;
   // readonly properties must be initialised and can never be changed
-  readonly heightInCentimetres: number = 10;
+  public readonly heightInCentimetres: number = 10;
+  private age: number;
 
   // constructors can also be protected so they can't be called except by base classes
   protected constructor() {
@@ -168,7 +176,7 @@ class AgedPerson extends Person {
     this.age = 10;
   }
 
-  getAge(): string {
+  public getAge(): string {
     // this.heightInCentimetres++; // error TS2540: Cannot assign to 'heightInCentimetres' because it is a read-only property.
     return this.name + " is " + this.age + " years old";
   }
@@ -184,7 +192,7 @@ class Octopus {
     this.name = name;
   }
 
-  getName(): string {
+  public getName(): string {
     return this.name;
   }
 }
@@ -208,7 +216,7 @@ let aClassWithGetter = new ClassWithGetter();
 aClassWithGetter.age = 11;
 console.log(aClassWithGetter.age);
 
-//First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported.
+// First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported.
 // Second, accessors with a get and no set are automatically inferred to be readonly.
 // This is helpful when generating a .d.ts file from your code, because users of your property can see that they can’t change it.
 
@@ -216,21 +224,21 @@ console.log(aClassWithGetter.age);
 // those that are visible on the class itself rather than on the instances
 // to access the static property, you prepend it with the name of the class
 class TheClassWithStaticProperty2 {
-  static className: string = "";
+  public static className: string = "";
 }
 
 console.log(TheClassWithStaticProperty2.className);
 
 // abstract classes are classes that cannot be instantiated
 abstract class AbstractConcept {
-  abstract anAbstractMethod(): void; // abstract methods can be defined in an abstract class.  child classes must define an implementation
+  public abstract anAbstractMethod(): void; // abstract methods can be defined in an abstract class.  child classes must define an implementation
 }
 // let anAbstractConcept = new AbstractConcept(); // error TS2511: Cannot create an instance of an abstract class.
 
 class ConcreteConcept extends AbstractConcept {
   // abstract aMethod(): number; // error TS1244: Abstract methods can only appear within an abstract class.
 
-  anAbstractMethod(): void {
+  public anAbstractMethod(): void {
     throw new Error("Method not implemented.");
   }
 }
