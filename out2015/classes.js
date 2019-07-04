@@ -5,7 +5,7 @@
 // are built from these classes. Starting with ECMAScript 2015, also known as ECMAScript 6,
 // JavaScript programmers will be able to build their applications using this object-oriented
 // class-based approach.
-// TypeScript supports classes
+// Classes
 class Greeter {
     constructor(message) {
         this.greeting = message; // member access is done with the `this` operator
@@ -15,7 +15,7 @@ class Greeter {
     }
 }
 let greeter = new Greeter("Jason2");
-// TypeScript supports inheritance
+// Inheritance
 class ChildGreeter extends Greeter {
     constructor(age) {
         super("Jason"); // super must be called if a constructor is defined
@@ -29,22 +29,24 @@ let agedPerson = new ChildGreeter(92);
 agedPerson.greet(); // defined on parent class
 agedPerson.sayAge(); // defied on child class
 let anotherPerson = agedPerson; // variable of type parent can hold child instances
-// overriding methods
+// Overriding Methods
 class OverridingGreeter extends Greeter {
     constructor(name, age) {
         super(name);
         this.age = age;
     }
-    // this implementation overrides the base class implementation
+    // this implementation overrides the Greeter.greet() implementation
     greet() {
         return `You're ${this.age}!`;
     }
 }
+// Member Visibility
 class MemberVisibility {
     constructor() {
         this.age = 10; // Members are public by default
         this.name = ""; // protected properties can be accessed by child classes
-        this.count = 1; // properties can be marked as private so they are not accessible outside the class (or by child classes)
+        this.count = 1; // private properties are not accessible outside the class (including child classes)
+        this.fullName = "";
     }
     getName() {
         return this.name;
@@ -67,10 +69,12 @@ class AnotherClass {
         return `Hello, ${this.myName}!`;
     }
 }
+let anotherClass = new AnotherClass("", 10, "blue");
+console.log(anotherClass.colour);
 // Accessors can be specified on classes
-// First, accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported.
-// Second, accessors with a get and no set are automatically inferred to be readonly.
-// This is helpful when generating a .d.ts file from your code, because users of your property can see that they can’t change it.
+// Note: Accessors require you to set the compiler to output ECMAScript 5 or higher. Downleveling to ECMAScript 3 is not supported.
+// Note: Accessors with a get and no set are automatically inferred to be readonly. This is helpful when generating a .d.ts
+// file from your code, because users of your property can see that they can’t change it.
 class ClassWithGetter {
     constructor() {
         this._age = 10; // note: this needs to have a different name to the properties
@@ -79,29 +83,22 @@ class ClassWithGetter {
         return this._age;
     }
     set age(value) {
+        if (age < 0)
+            throw new Error("Invalid Operation");
         this._age = value;
     }
 }
 let aClassWithGetter = new ClassWithGetter();
 aClassWithGetter.age = 11;
 console.log(aClassWithGetter.age);
-// Static Members - Similar to prepending a variable name with `this`, you
-// can prepend it with the class name to access Class static members
-class StaticMembersClass {
-    constructor() {
-        this.x = StaticMembersClass.theMember;
-    }
-}
-StaticMembersClass.theMember = 10;
-StaticMembersClass.theMember++;
-// static properties
+// Static Members
 // those that are visible on the class itself rather than on the instances
 // to access the static property, you prepend it with the name of the class
-class TheClassWithStaticProperty2 {
+class TheClassWithStaticProperty {
 }
-TheClassWithStaticProperty2.className = "";
-console.log(TheClassWithStaticProperty2.className);
-// abstract classes are classes that cannot be instantiated
+TheClassWithStaticProperty.className = "";
+console.log(TheClassWithStaticProperty.className);
+// Abstract Classes are classes that cannot be instantiated
 class AbstractConcept {
 }
 // let anAbstractConcept = new AbstractConcept(); // error TS2511: Cannot create an instance of an abstract class.
@@ -112,18 +109,7 @@ class ConcreteConcept extends AbstractConcept {
     }
 }
 let aConcreteConcept = new ConcreteConcept();
-// Methods within an abstract class that are marked as abstract do not contain an implementation and must be implemented in derived classes.
-// Abstract methods share a similar syntax to interface methods. Both define the signature of a method without including a method body.
-// However, abstract methods must include the abstract keyword and may optionally include access modifiers.
-// Abstract classes are classes that can be derived from but cannot be
-// instantiated
-class NotInstantiatable {
-    // abstract class can have concrete methods
-    printDetail() {
-        console.log("here");
-    }
-}
-// let instance: NotInstantiatable = new NotInstantiatable(); // error TS2511: Cannot create an instance of an abstract class
+// Type equivalence
 // TypeScript is a structural type system. When we compare two different types,
 // regardless of where they came from, if the types of all members are compatible,
 // then we say the types themselves are compatible.
