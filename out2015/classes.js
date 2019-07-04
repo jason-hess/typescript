@@ -47,7 +47,7 @@ class MemberVisibility {
         this.name = ""; // protected properties can be accessed by child classes
         this.count = 1; // private properties are not accessible outside the class (including child classes)
         this.fullName = "";
-    }
+    } // constructors can have access modifiers
     getName() {
         return this.name;
     }
@@ -125,7 +125,7 @@ class Animal {
 }
 let anEmployee = new Employee();
 let anAnimal = new Animal();
-anEmployee = anAnimal; // this is fine.
+anEmployee = anAnimal; // because they both take the shape {name: string}
 // However, when comparing types that have *private* or *protected* members,
 // we treat these types differently. For two types to be considered compatible,
 // if one of them has a private member, then the other must have a private member
@@ -143,14 +143,14 @@ class AnimalEx {
 let anEmployeeEx = new EmployeeEx();
 let anAnimalEx = new AnimalEx();
 // because each of these classes has a private property that don't originate from the same
-// declaration, they are not compatible
+// declaration, they are not compatible:
 // anEmployeeEx = anAnimalEx; // error TS2322: Type 'AnimalEx' is not assignable to type 'EmployeeEx'
+// Read-Only Properties
 class Person {
 }
 class AgedPerson extends Person {
-    // constructors can also be protected so they can't be called except by base classes
     constructor() {
-        super();
+        super(...arguments);
         // readonly properties must be initialised and can never be changed
         this.heightInCentimetres = 10;
         this.age = 10;
