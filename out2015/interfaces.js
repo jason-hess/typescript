@@ -9,6 +9,9 @@ printLabel(myObj);
 function printAnotherLabel(lablledObj) {
     console.log(lablledObj.label);
 }
+printLabel(myObj);
+let myOtherObj = myObj;
+printLabel(myOtherObj);
 function someBlahFunction(obj) {
     console.log(obj.firstProperty);
     if (obj.secondProperty) {
@@ -31,6 +34,13 @@ function excessPropertyChecking(obj) {
 }
 var obj = { jason: 10, label: "hello" };
 excessPropertyChecking(obj); // no error because check is less strict - additional properties are OK
+class WithLabel {
+    constructor() {
+        this.label = "10";
+        this.otherProperty = 10;
+    }
+}
+excessPropertyChecking(new WithLabel());
 // this lets us describe the shape of a variable
 // note the parameter name isn't enforced to be the
 // same, just the type
@@ -38,7 +48,7 @@ let theFunction = function (j) {
     console.log(j++);
     return "finished";
 };
-// the parameter can be type inferred
+// the parameter can be type inferred from the interface
 let theOtherFunction = function (j) {
     console.log(j++);
     return "finished";
@@ -58,12 +68,19 @@ let indexable = new Indexable();
 indexable["key"] = 10;
 indexable[10] = 10;
 class Thing {
+    constructor() {
+        this.someProperty = 0;
+    }
 }
 class SubThing extends Thing {
+    constructor() {
+        super(...arguments);
+        this.someProperty = 0;
+    }
 }
 class Dog {
     constructor() {
-        this.type = "Dog";
+        this.species = "Dog";
         this.age = 10;
     }
     growOlder() {
@@ -77,10 +94,28 @@ let hybridInstance = function () {
     };
     counter[10] = true;
     counter.value = true;
-    counter.setValue = v => { };
+    counter.setValue = v => "";
     return counter;
 };
-// Interfaces describe the public side of the class, rather than both the public
-// and private side.This prohibits you from using them to check that a class also
-// has particular types for the private side of the class instance.
-// todo: come back to this one later
+// let somethingWithReadOnly: IWithReadOnly = { name: "Jason", age: 55 }; // error TS2322: Type '{ name: string; age: number; }' is not assignable to type 'IWithReadOnly'. Object literal may only specify known properties, and 'age' does not exist in type 'IWithReadOnly'
+let somethingWithReadOnly = { name: "Jason" };
+// somethingWithReadOnly.name = "Frank"; // error TS2540: Cannot assign to 'name' because it is a read-only property
+class WithReadOnly {
+    constructor() {
+        this.name = "10";
+    }
+    setName() {
+        this.name = "14";
+    }
+}
+let withReadOnly = new WithReadOnly();
+withReadOnly.name = "16";
+let withReadOnly2 = new WithReadOnly();
+// withReadOnly2.name = "15"; // error TS2540: Cannot assign to 'name' because it is a read-only property
+// TypeScript comes with a ReadonlyArray<T> type that is the same as Array<T> with all mutating methods removed, so you can make sure you don’t change your arrays after creation:
+let a = [1, 2, 3, 4];
+let ro = a;
+ro[0] = 12; // error!
+ro.push(5); // error!
+ro.length = 100; // error!
+a = ro; // error!

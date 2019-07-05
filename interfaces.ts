@@ -13,6 +13,9 @@ interface IMyThing {
 function printAnotherLabel(lablledObj: IMyThing) {
   console.log(lablledObj.label);
 }
+printLabel(myObj);
+let myOtherObj: IMyThing = myObj;
+printLabel(myOtherObj);
 // the interface represents the requirement of the object
 // having the properties as defined on the interface
 // so an interface is like a set of requirements on an instance
@@ -21,6 +24,7 @@ function printAnotherLabel(lablledObj: IMyThing) {
 // properties and that their types match
 
 // you can define optional (not required) properties on interfaces
+// Interfaces with optional properties are written similar to other interfaces, with each optional property denoted by a ? at the end of the property name in the declaration.
 interface IAnotherInterface {
   firstProperty: string;
   secondProperty?: number;
@@ -50,9 +54,18 @@ function excessPropertyChecking(obj: { label: string }) {
 
 var obj = { jason: 10, label: "hello" };
 excessPropertyChecking(obj); // no error because check is less strict - additional properties are OK
-// excessPropertyChecking({ jason: 10, label: "hello" });
-// error TS2345: Argument of type '{ jason: number; label: string; }' is not assignable to parameter of type '{ label: string; }'.
+// Since obj is a variable that could be used elsewhere it is less strict
+// However, hard-coded objects are an issue:
+// excessPropertyChecking({ jason: 10, label: "hello" }); // error TS2345: Argument of type '{ jason: number; label: string; }' is not assignable to parameter of type '{ label: string; }'.
 // Object literal may only specify known properties, and 'jason' does not exist in type '{ label: string; }'.
+interface IWithLabel {
+  label: string;
+}
+class WithLabel implements IWithLabel {
+  label: string = "10";
+  otherProperty: number = 10;
+}
+excessPropertyChecking(new WithLabel());
 
 // interfaces can describe functions (functions are objects in JavaScript)
 interface IFunction {
@@ -61,15 +74,16 @@ interface IFunction {
 // this lets us describe the shape of a variable
 // note the parameter name isn't enforced to be the
 // same, just the type
-let theFunction: IFunction = function (j: number) {
+let theFunction: IFunction = function(j: number): string {
   console.log(j++);
   return "finished";
 };
-// the parameter can be type inferred
-let theOtherFunction: IFunction = function (j) {
+// the parameter can be type inferred from the interface
+let theOtherFunction: IFunction = function(j) {
   console.log(j++);
   return "finished";
 };
+
 // return types can also be inferred
 // let anotherFunction: IFunction = function(j) { // error TS2322: Type '(j: number) => boolean' is not assignable to type 'IFunction'
 //   return true; // this is an error since the return type is inferred to be a string
@@ -77,7 +91,7 @@ let theOtherFunction: IFunction = function (j) {
 
 // inferrence can also go the other way
 // here inferredFunction is known to take a number and return a boolean
-let inferredFunction = function (j: number): boolean {
+let inferredFunction = function(j: number): boolean {
   return true;
 };
 // let returnValue: string = inferredFunction("hello"); // error TS2345: Argument of type '"hello"' is not assignable to parameter of type 'number'
@@ -95,7 +109,7 @@ class Indexable implements IIndexable {
 let indexable: IIndexable = new Indexable();
 indexable["key"] = 10;
 indexable[10] = 10;
-// There are two types of supported index signatures: string and number
+// The  two types of supported index signatures are string and number
 interface IAnotherIndexable {
   [index: string]: number;
 }
@@ -114,10 +128,10 @@ interface IYetAnotherIndexable {
   [index: string]: number; // not valid
 }
 class Thing {
-  someProperty: number;
+  someProperty: number = 0;
 }
 class SubThing extends Thing {
-  someProperty: number;
+  someProperty: number = 0;
 }
 interface IYetAnotherIndexable2 {
   [index: number]: Thing;
@@ -131,7 +145,7 @@ interface IYetAnotherIndexable3 {
 interface IAllPropertiesMustBeTheSameTime {
   [index: string]: number;
   length: number;
-  anotherProperty: string; // this is not ok
+  // anotherProperty: string; // error TS2411: Property 'anotherProperty' of type 'string' is not assignable to string index type 'number'
 }
 interface IAllPropertiesMustBeTheSameType {
   [i: number]: number;
@@ -141,14 +155,14 @@ interface IAllPropertiesMustBeTheSameType {
 // interfaces can be implmented by a class (and can define functions that
 // must be implemented)
 interface IAnimal {
-  type: string;
+  species: string;
   age: number;
   growOlder(): void;
 }
 class Dog implements IAnimal {
-  type: string;
+  species: string;
   constructor() {
-    this.type = "Dog";
+    this.species = "Dog";
     this.age = 10;
   }
 
@@ -172,20 +186,51 @@ let childInstance: IChildInterface = { label: "one", label2: 2 };
 interface IHybridInterface {
   (value: number): boolean;
   [index: number]: boolean;
-  setValue(value: number);
+  setValue(value: number): string;
   value: boolean;
 }
-let hybridInstance = function (): IHybridInterface {
-  const counter = <IHybridInterface>function (value: number) {
+let hybridInstance = function(): IHybridInterface {
+  const counter = <IHybridInterface>function(value: number) {
     return true;
   };
   counter[10] = true;
   counter.value = true;
-  counter.setValue = v => { };
+  counter.setValue = v => "";
   return counter;
 };
 
-// Interfaces describe the public side of the class, rather than both the public
+// Interfaces only describe the public side of the class, rather than both the public
 // and private side.This prohibits you from using them to check that a class also
 // has particular types for the private side of the class instance.
 // todo: come back to this one later
+
+// read-only properties
+interface IWithReadOnly {
+  readonly name: string;
+}
+// let somethingWithReadOnly: IWithReadOnly = { name: "Jason", age: 55 }; // error TS2322: Type '{ name: string; age: number; }' is not assignable to type 'IWithReadOnly'. Object literal may only specify known properties, and 'age' does not exist in type 'IWithReadOnly'
+let somethingWithReadOnly: IWithReadOnly = { name: "Jason" };
+// somethingWithReadOnly.name = "Frank"; // error TS2540: Cannot assign to 'name' because it is a read-only property
+class WithReadOnly implements IWithReadOnly {
+  name: string = "10";
+
+  public setName() {
+    this.name = "14";
+  }
+}
+let withReadOnly = new WithReadOnly();
+withReadOnly.name = "16";
+let withReadOnly2: IWithReadOnly = new WithReadOnly();
+// withReadOnly2.name = "15"; // error TS2540: Cannot assign to 'name' because it is a read-only property
+
+// TypeScript comes with a ReadonlyArray<T> type that is the same as Array<T> with all mutating methods removed, so you can make sure you don’t change your arrays after creation:
+let aWriteableArray: number[] = [1, 2, 3, 4];
+let aReadOnlyArray: ReadonlyArray<number> = aWriteableArray;
+console.log(aReadOnlyArray[10]);
+aReadOnlyArray[0] = 12; // error!
+aReadOnlyArray.push(5); // error!
+aReadOnlyArray.length = 100; // error!
+a = aReadOnlyArray; // error!
+// On the last line of the snippet you can see that even assigning the entire ReadonlyArray back to a normal array is illegal. You can still override it with a type assertion, though:
+
+a = aReadOnlyArray as number[];

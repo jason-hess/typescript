@@ -22,6 +22,9 @@ printLabel(myObj);
 function printAnotherLabel(lablledObj) {
     console.log(lablledObj.label);
 }
+printLabel(myObj);
+var myOtherObj = myObj;
+printLabel(myOtherObj);
 function someBlahFunction(obj) {
     console.log(obj.firstProperty);
     if (obj.secondProperty) {
@@ -44,6 +47,14 @@ function excessPropertyChecking(obj) {
 }
 var obj = { jason: 10, label: "hello" };
 excessPropertyChecking(obj); // no error because check is less strict - additional properties are OK
+var WithLabel = /** @class */ (function () {
+    function WithLabel() {
+        this.label = "10";
+        this.otherProperty = 10;
+    }
+    return WithLabel;
+}());
+excessPropertyChecking(new WithLabel());
 // this lets us describe the shape of a variable
 // note the parameter name isn't enforced to be the
 // same, just the type
@@ -51,7 +62,7 @@ var theFunction = function (j) {
     console.log(j++);
     return "finished";
 };
-// the parameter can be type inferred
+// the parameter can be type inferred from the interface
 var theOtherFunction = function (j) {
     console.log(j++);
     return "finished";
@@ -75,19 +86,22 @@ indexable["key"] = 10;
 indexable[10] = 10;
 var Thing = /** @class */ (function () {
     function Thing() {
+        this.someProperty = 0;
     }
     return Thing;
 }());
 var SubThing = /** @class */ (function (_super) {
     __extends(SubThing, _super);
     function SubThing() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.someProperty = 0;
+        return _this;
     }
     return SubThing;
 }(Thing));
 var Dog = /** @class */ (function () {
     function Dog() {
-        this.type = "Dog";
+        this.species = "Dog";
         this.age = 10;
     }
     Dog.prototype.growOlder = function () {
@@ -102,10 +116,29 @@ var hybridInstance = function () {
     };
     counter[10] = true;
     counter.value = true;
-    counter.setValue = function (v) { };
+    counter.setValue = function (v) { return ""; };
     return counter;
 };
-// Interfaces describe the public side of the class, rather than both the public
-// and private side.This prohibits you from using them to check that a class also
-// has particular types for the private side of the class instance.
-// todo: come back to this one later
+// let somethingWithReadOnly: IWithReadOnly = { name: "Jason", age: 55 }; // error TS2322: Type '{ name: string; age: number; }' is not assignable to type 'IWithReadOnly'. Object literal may only specify known properties, and 'age' does not exist in type 'IWithReadOnly'
+var somethingWithReadOnly = { name: "Jason" };
+// somethingWithReadOnly.name = "Frank"; // error TS2540: Cannot assign to 'name' because it is a read-only property
+var WithReadOnly = /** @class */ (function () {
+    function WithReadOnly() {
+        this.name = "10";
+    }
+    WithReadOnly.prototype.setName = function () {
+        this.name = "14";
+    };
+    return WithReadOnly;
+}());
+var withReadOnly = new WithReadOnly();
+withReadOnly.name = "16";
+var withReadOnly2 = new WithReadOnly();
+// withReadOnly2.name = "15"; // error TS2540: Cannot assign to 'name' because it is a read-only property
+// TypeScript comes with a ReadonlyArray<T> type that is the same as Array<T> with all mutating methods removed, so you can make sure you don’t change your arrays after creation:
+var a = [1, 2, 3, 4];
+var ro = a;
+ro[0] = 12; // error!
+ro.push(5); // error!
+ro.length = 100; // error!
+a = ro; // error!
