@@ -8,6 +8,7 @@
 //   }
 //   return x;
 // }
+// the above function will return 10 if passed true
 // function f(x) {
 //   var x;
 //   var x;
@@ -15,12 +16,11 @@
 //       var x;
 //   }
 // }
-// the above function will return 10 if passed true
 // all declarations are accessible anywhere within their containing function,
 // module, namespace, or global scope - regardless of the containing block
 // in the following function all of the i variables are the same thing and variable declarations in
 // JavaScript are hoisted to the top of the function
-// With var declarations, it doesn't matter how many times you declared your variables; you just got one
+// With var declarations, it doesn't matter how many times you declared your variables; you just get one
 function sumMatrix(matrix) {
     var sum = 0;
     for (var i = 0; i < matrix.length; i++) {
@@ -70,6 +70,7 @@ function f2(input) {
 }
 function theCityThatAlwaysSleeps() {
     let getCity;
+    let city = "";
     if (true) {
         let city = "Seattle";
         getCity = function () {
@@ -107,7 +108,7 @@ for (let i = 0; i < 10; i++) {
 // constants
 const theConst = 10;
 // const is like let except the value of the variable cannot be changed once it is bound
-// const and let have similar scoping semantics
+// *const and let have similar scoping semantics*
 // theConst = 11; //  error TS2588: Cannot assign to 'theConst' because it is a constant.
 // the object the const refers to can still change
 // array destructuring

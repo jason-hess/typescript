@@ -48,7 +48,7 @@ let theFunction = function (j) {
     console.log(j++);
     return "finished";
 };
-// the parameter can be type inferred from the interface
+// the parameter can be type inferred
 let theOtherFunction = function (j) {
     console.log(j++);
     return "finished";
@@ -94,7 +94,7 @@ let hybridInstance = function () {
     };
     counter[10] = true;
     counter.value = true;
-    counter.setValue = v => "";
+    counter.setValue = v => { };
     return counter;
 };
 // let somethingWithReadOnly: IWithReadOnly = { name: "Jason", age: 55 }; // error TS2322: Type '{ name: string; age: number; }' is not assignable to type 'IWithReadOnly'. Object literal may only specify known properties, and 'age' does not exist in type 'IWithReadOnly'
@@ -113,9 +113,12 @@ withReadOnly.name = "16";
 let withReadOnly2 = new WithReadOnly();
 // withReadOnly2.name = "15"; // error TS2540: Cannot assign to 'name' because it is a read-only property
 // TypeScript comes with a ReadonlyArray<T> type that is the same as Array<T> with all mutating methods removed, so you can make sure you don’t change your arrays after creation:
-let a = [1, 2, 3, 4];
-let ro = a;
-ro[0] = 12; // error!
-ro.push(5); // error!
-ro.length = 100; // error!
-a = ro; // error!
+let aWriteableArray = [1, 2, 3, 4];
+let aReadOnlyArray = aWriteableArray;
+console.log(aReadOnlyArray[10]);
+aReadOnlyArray[0] = 12; // error!
+aReadOnlyArray.push(5); // error!
+aReadOnlyArray.length = 100; // error!
+a = aReadOnlyArray; // error!
+// On the last line of the snippet you can see that even assigning the entire ReadonlyArray back to a normal array is illegal. You can still override it with a type assertion, though:
+a = aReadOnlyArray;
