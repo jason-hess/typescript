@@ -32,7 +32,8 @@ var age = 10;
 // template strings can be multi-line and\or substitute variables
 var theString = "This a template string\n" + color + ": " + (age + 1);
 // array
-var theList = [1, 2, 3]; // or: let anotherList: Array<number> = [1, 2, 3];
+var theList = [1, 2, 3]; // or: 
+var anotherList = [1, 2, 3];
 // because arrays are JavaScript arrays, you can add elements to them and create holes in them
 theList[3] = 4;
 theList.push(5);
