@@ -1,6 +1,9 @@
-var Colour;
-(function (Colour) {
-    Colour[Colour["Aqua"] = 0] = "Aqua";
-    Colour[Colour["Maroon"] = 1] = "Maroon";
-})(Colour || (Colour = {}));
-console.log(Colour["Aqua"]);
+function somefunction() {
+  for (var index = 0; index < 10; index++) {
+    console.log(index);
+    for (var index = 0; index < 10; index++) {
+      console.log("  " + index);
+    }
+  }
+}
+somefunction();
