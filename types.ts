@@ -108,6 +108,8 @@ let aLength: number = (<string>aValue).length;
 let anotherLength: number = (aValue as string).length;
 // when using TypeScript with JSX, only as-style assertions are allowed
 
+// TODO: Add `unknown` type
+
 // use let instead of var whenever possible to prevent scope issues
 var tz: string = "value";
 
