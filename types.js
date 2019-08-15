@@ -1,3 +1,4 @@
+"use strict";
 // TypeScript is a typed superset of JavaScript that compiles to plain JavaScript
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
@@ -173,10 +174,17 @@ window.onmousedown = function (mouseEvent) {
 // The contextual type also acts as a candidate type in best common type.For example:
 // type guard
 // A type guard is some expression that performs a runtime check that
-// asserts the type in some scope.To define a type guard, we simply
+// asserts the type in some scope.  To define a user-defined type guard, we simply
 // need to define a function whose return type is a type predicate:
 function isBear(pet) {
     return pet.growl !== undefined;
+}
+// todo: this needs more investigation
+// instanceof
+// In order to check if an instance of a class is an instance of a particular class, you use
+// the `instanceof` operator:
+var aCheetah = new Cheetah();
+if (aCheetah instanceof Cheetah) {
 }
 // generics lets us capture the type of an argument or denote a return type
 function genericFunction(param) {
@@ -190,12 +198,14 @@ var explicitGeneric = genericFunction(true);
 // the compiler can sometimes infer the type
 var genericValue = genericFunction("hello"); // returns string
 var genericValue2 = genericFunction(10); // returns number
-// null and undefinied are two different types
+// null and undefined are two different types
 var nullValue;
+// nullValue = undefined; // error TS2322: Type 'undefined' is not assignable to type 'null'
 nullValue = null;
 // nullValue = 10; // error TS2322: Type '10' is not assignable to type 'null'
 var undefinedValue;
 undefinedValue = undefined;
+// undefinedValue = null; // error TS2322: Type 'null' is not assignable to type 'undefined'
 // undefinedValue = 11; // error TS2322: Type '11' is not assignable to type 'undefined'
 // The --strictNullChecks compile flag removes null from the domain of every type
 // In strict null checking mode, the null and undefined values are not in the domain of
@@ -214,6 +224,7 @@ var aLastName = aFullName;
 function infiniteLoop() {
     while (true) { }
 }
+var neverEver;
 // The `object` type is a type that represents a non-primitive type
 function operateOnObject(o) {
     return;
