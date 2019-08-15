@@ -1,9 +1,7 @@
 "use strict";
-var IndexableEx = /** @class */ (function () {
-    function IndexableEx() {
-    }
-    return IndexableEx;
-}());
-var dictionary = new IndexableEx();
-dictionary[10] = "10";
-console.log(dictionary[10]);
+var Colour;
+(function (Colour) {
+    Colour[Colour["Aqua"] = 0] = "Aqua";
+    Colour[Colour["Maroon"] = 1] = "Maroon";
+})(Colour || (Colour = {}));
+console.log(Colour["Aqua"]);

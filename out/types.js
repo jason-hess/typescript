@@ -32,7 +32,7 @@ var age = 10;
 // template strings can be multi-line and\or substitute variables
 var theString = "This a template string\n" + color + ": " + (age + 1);
 // array
-var theList = [1, 2, 3]; // or: 
+var theList = [1, 2, 3]; // or:
 var anotherList = [1, 2, 3];
 // because arrays are JavaScript arrays, you can add elements to them and create holes in them
 theList[3] = 4;
@@ -73,6 +73,9 @@ var AnotherEnum;
 var enumValue = AnotherEnum[13]; // enumValue = "ValueTwo"
 var enumNumberValue = AnotherEnum["ValueTwo"];
 var anotherEnumValue = 13;
+var redAsNumber = Colour.Red; // 0
+var redAsString = Colour[Colour.Red]; // "Red"
+var redAsNumberAgain = Colour["Red"]; // 0
 // be careful
 var yetAnotherEnumValue = 12; // valid but falls out of the valid range.
 // the any type lets you opt-in and out-out of type checking as needed
@@ -80,16 +83,17 @@ var z = "string";
 z = 10;
 z = true;
 var untypedList = ["string", 10];
-// null and undefined are two different values (and there is a type null and a type undefined)
+// null and undefined are two different values (and there is a type null and an undefined type)
 z = undefined;
 z = null;
-// The --strictNullChecks compile flag removes null from the domain of every type
 // void is the absence of any type.  A variable of type void can only be undefined.
 var t;
 var u = undefined;
+// let v: void = 10; // error TS2322: Type '10' is not assignable to type 'void'
 // void is only really useful for functions:
 function voidFunction() {
     // i don't return a value
+    // return 10; // error TS2322: Type '10' is not assignable to type 'void'
 }
 // type inference
 // TypeScript will infer types for you
@@ -101,8 +105,10 @@ var isAlsoDone = true;
 // by the compiler. TypeScript assumes that you, the programmer, have performed any
 // special checks that you need.
 var aValue = "jason";
-var anotherLength = aValue.length;
+// Type assertions have two forms. One is the “angle-bracket” syntax:
 var aLength = aValue.length;
+// the other is the `as` statement
+var anotherLength = aValue.length;
 // when using TypeScript with JSX, only as-style assertions are allowed
 // use let instead of var whenever possible to prevent scope issues
 var tz = "value";
@@ -111,8 +117,8 @@ var tz = "value";
 var unionType = "true";
 unionType = true;
 // unionType = 10; // error TS2322: Type '10' is not assignable to type 'string | boolean'
-var anotherUnionType; // parens are optional
-var arrayUnionType; // or a required for precedence
+var anotherUnionType; // parens can be used (number | string)
+var arrayUnionType; // or are required for precedence
 var unionOfNumberOrStringArray;
 // used in functions
 function unionTypeParameter(value, suffixOrPadding) {
@@ -150,8 +156,8 @@ var Cheetah = /** @class */ (function (_super) {
     }
     return Cheetah;
 }(AnAnimal));
-var typeInferredArray3 = [new Bear(), new Cheetah()]; // Bear[] ??
-var typeNotInferredArray = [new Bear(), new Cheetah()];
+var typeInferredArray3 = [new Bear(), new Cheetah()]; // (Bear | Cheetah)[]
+var typeNotInferredArray = [new Bear(), new Cheetah()]; // AnAnimal[]
 // When no best common type is found, the resulting inference is the empty object type, {}.
 // Because this type has no members, attempting to use any properties of it will cause an error.
 // This result allows you to still use the object in a type- agnostic manner, while providing type
@@ -192,9 +198,10 @@ nullValue = null;
 var undefinedValue;
 undefinedValue = undefined;
 // undefinedValue = 11; // error TS2322: Type '11' is not assignable to type 'undefined'
+// The --strictNullChecks compile flag removes null from the domain of every type
 // In strict null checking mode, the null and undefined values are not in the domain of
 // every type and are only assignable to themselves and any (the one exception being that
-// undefined is also assignable to void).So, whereas T and T | undefined are considered synonymous in
+// undefined is also assignable to void).  So, whereas T and T | undefined are considered synonymous in
 // regular type checking mode (because undefined is considered a subtype of any T), they are different
 // types in strict type checking mode, and only T | undefined permits undefined values.The same is
 // true for the relationship of T to T | null.
@@ -214,11 +221,3 @@ function operateOnObject(o) {
 }
 // operateOnObject(10); // error TS2345: Argument of type '10' is not assignable to parameter of type 'object'.
 operateOnObject(new Object());
-// Type assertions
-// A type assertion is like a type cast in other languages, but performs
-// no special checking or restructuring of data. It has no runtime impact,
-// and is used purely by the compiler.
-// Type assertions have two forms. One is the “angle-bracket” syntax:
-var aString = "10".length;
-// And the other is the as-syntax:
-var anotherString = "10".length;
