@@ -76,6 +76,18 @@ z = 10;
 z = true;
 let untypedList: any[] = ["string", 10];
 
+// unknown
+// Anything is assignable to unknown, but unknown isn't assignable to anything but itself and any
+// without a type assertion or a control flow based narrowing.
+// Likewise, no operations are permitted on an unknown without first asserting or narrowing to
+// a more specific type.
+// It looks like this was added in TypeScript 3 and seems a lot more useful than `any`
+let someAnyValue: any = 10;
+let someNumberValue: number = someAnyValue;
+let someUnknownValue: unknown = someAnyValue;
+// someNumberValue = someUnknownValue; // error TS2322: Type 'unknown' is not assignable to type 'number'
+someNumberValue = someUnknownValue as number;
+
 // null and undefined are two different values (and there is a type null and an undefined type)
 z = undefined;
 z = null;
@@ -107,8 +119,6 @@ let aLength: number = (<string>aValue).length;
 // the other is the `as` statement
 let anotherLength: number = (aValue as string).length;
 // when using TypeScript with JSX, only as-style assertions are allowed
-
-// TODO: Add `unknown` type
 
 // use let instead of var whenever possible to prevent scope issues
 var tz: string = "value";
