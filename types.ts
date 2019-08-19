@@ -82,11 +82,20 @@ let untypedList: any[] = ["string", 10];
 // Likewise, no operations are permitted on an unknown without first asserting or narrowing to
 // a more specific type.
 // It looks like this was added in TypeScript 3 and seems a lot more useful than `any`
-let someAnyValue: any = 10;
+let someAnyValue: any = 10; // any value can be assigned to an any variable
 let someNumberValue: number = someAnyValue;
-let someUnknownValue: unknown = someAnyValue;
+let someUnknownValue: unknown = "10"; // any value can be assigned to an unknown variable
+someUnknownValue = 10;
 // someNumberValue = someUnknownValue; // error TS2322: Type 'unknown' is not assignable to type 'number'
 someNumberValue = someUnknownValue as number;
+// The unknown value is only assignable to variables of type any or unknown (without a type assertion)
+// We can narrow the unknown type to a more specific type in different ways,
+// including the typeof operator, the instanceof operator, and custom type guard functions.
+function operateOnAnUnknownValue(anUnknownValue: unknown): void {
+  if (typeof anUnknownValue == "number") {
+    let aNumber: number = anUnknownValue; // the compiler now knows that anUnknownValue is a number
+  }
+}
 
 // null and undefined are two different values (and there is a type null and an undefined type)
 z = undefined;
